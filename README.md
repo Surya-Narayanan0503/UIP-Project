@@ -1,3 +1,3 @@
 # E-R DIAGRAM FOR THE PROJECT
 
-![alt text](Entity Relationship Diagram.jpg)
+![alt text](Entity_Relationship_Diagram.jpg)
