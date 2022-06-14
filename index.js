@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const path = require('path');
 
 const userRoutes = require('./server/routes/user');
+const postRoutes = require('./server/routes/post');
 
 mongoose.connect(process.env.dbURL)
     .then(console.log("Connected to MongoDB"))
@@ -23,6 +24,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/user', userRoutes);
+app.use('/post', postRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}!`));
