@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true},
@@ -13,10 +14,14 @@ async function register(username, password) {
   const user = await getUser(username);
   if(user) throw Error('Username already in use');
 
-  
+  const salt = await bcrypt.genSalt(10);  
+  const hashedPassword = await bcrypt.hash(password,salt);
+
   const newUser = await User.create({
     username: username,
-    password: password
+    password: hashedPassword,
+    followers: [],
+    following: []
   });
 
   return newUser;
@@ -25,7 +30,11 @@ async function register(username, password) {
 async function login(username, password) {
   const user = await getUser(username);
   if(!user) throw Error('Error founding User');
-  if(user.password != password) throw Error('Incorrect Password');
+
+  const checkedPassword = await bcrypt.compare(password, user.password);
+  if(!checkedPassword){
+      throw new Error('Incorrect Password');
+  }
   return user;
 }
 
